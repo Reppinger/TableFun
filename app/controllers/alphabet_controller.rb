@@ -16,7 +16,7 @@ class AlphabetController < UIViewController
 
   def create_data
     data = {}
-    ("A".."Z").to_a.each do |letter|
+    ('A'..'Z').to_a.each do |letter|
       data[letter] = []
       5.times do
         # Via http://stackoverflow.com/a/88341/910451
@@ -29,6 +29,10 @@ class AlphabetController < UIViewController
 
   def sections
     @data.keys.sort
+  end
+
+  def sectionIndexTitlesForTableView(tableView)
+    sections
   end
 
   def rows_for_section(section_index)
@@ -47,6 +51,10 @@ class AlphabetController < UIViewController
     self.sections.count
   end
 
+  def tableView(tableView, sectionForSectionIndexTitle: title, atIndex: index)
+    sections.index title
+  end
+
   def tableView(tableView, numberOfRowsInSection: section)
     rows_for_section(section).count
   end
@@ -55,7 +63,7 @@ class AlphabetController < UIViewController
     @reuseIdentifier ||= "CELL_IDENTIFIER"
 
     cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier)
-    cell = UITableViewCell.alloc.initWithStyle(
+    cell ||= UITableViewCell.alloc.initWithStyle(
         UITableViewCellStyleDefault,
         reuseIdentifier:@reuseIdentifier)
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
