@@ -4,7 +4,7 @@ class AlphabetController < UIViewController
 
     self.title = "Alphabet"
 
-    @table = UITableView.alloc.initWithFrame(self.view.bounds)
+    @table = UITableView.alloc.initWithFrame(self.view.bounds, style: UITableViewStyleGrouped)
     @table.autoresizingMask = UIViewAutoresizingFlexibleHeight
     self.view.addSubview(@table)
 
