@@ -59,13 +59,24 @@ class AlphabetController < UIViewController
     rows_for_section(section).count
   end
 
+  def tableView(tableView, editingStyleForRowAtIndexPath: indexPath)
+    UITableViewCellEditingStyleDelete
+  end
+
+  def tableView(tableView, commitEditingStyle: editingStyle, forRowAtIndexPath: indexPath)
+    if editingStyle == UITableViewCellEditingStyleDelete
+      rows_for_section(indexPath.section).delete_at indexPath.row
+      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationFade)
+    end
+  end
+
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
-    @reuseIdentifier ||= "CELL_IDENTIFIER"
+    reuseIdentifier ||= "CELL_IDENTIFIER"
 
     cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier)
     cell ||= UITableViewCell.alloc.initWithStyle(
         UITableViewCellStyleDefault,
-        reuseIdentifier:@reuseIdentifier)
+        reuseIdentifier:reuseIdentifier)
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     cell.textLabel.text = row_for_index_path(indexPath)
     cell
